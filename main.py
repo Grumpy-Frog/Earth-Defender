@@ -1,4 +1,5 @@
 import pygame
+import random
 
 # Initializing the pygame
 pygame.init()
@@ -8,7 +9,6 @@ window = pygame.display.set_mode((800, 600))
 
 # FrameRate
 windowFrameRate = 60
-
 
 # Title and Icon
 pygame.display.set_caption("Earth Defender")
@@ -21,9 +21,20 @@ playerX = 370
 playerY = 540
 playerX_change = 0
 
+# Enemy
+enemyTexture = pygame.image.load("images/enemy.png")
+enemyX = random.randint(0, 736)
+enemyY = random.randint(50, 150)
+enemyX_change = 3
+enemyY_change = 1
+
 
 def player(x, y):
     window.blit(playerTexture, (x, y))
+
+
+def enemy(x, y):
+    window.blit(enemyTexture, (x, y))
 
 
 # Game Loop
@@ -50,11 +61,22 @@ while running:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 playerX_change = 0
 
+    # Player boundary
     tempPositionX = playerX + playerX_change
     if (tempPositionX > 0) and (tempPositionX < 736):
         playerX = tempPositionX
 
     player(playerX, playerY)
+
+    # Enemy boundary and Movements
+    tempPositionX = enemyX + enemyX_change
+    if (tempPositionX > 0) and (tempPositionX < 736):
+        enemyX = tempPositionX
+        enemyY += enemyY_change
+    else:
+        enemyX_change *= -1
+
+    enemy(enemyX, enemyY)
 
     pygame.display.update()
 
